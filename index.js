@@ -3,6 +3,10 @@ const browseBtn = document.querySelector(".browseBtn")
 const fileInput = document.querySelector("#fileInput");
 
 const bgProgress = document.querySelector(".bg-progress");
+const progressContainer = document.querySelector(".progress-container");
+const progressBar = document.querySelector(".progress-bar");
+
+const percentDiv = document.querySelector("#percent");
 
 const host = "https://fs-2-mqto.onrender.com/";
 const uploadURL = `${host}api/files`;
@@ -43,6 +47,7 @@ browseBtn.addEventListener("click", ()=>{
 });
 
 const uploadFile = ()=>{
+    progressContainer.style.display ="block";
 
     const file = fileInput.files[0];
     const formData = new FormData();
@@ -53,6 +58,7 @@ const uploadFile = ()=>{
         if(xhr.readyState === XMLHttpRequest.DONE)
         {
             console.log(xhr.response);
+            showLink(JSON.parse(xhr.response))
         }
     };
 
@@ -64,6 +70,14 @@ const uploadFile = ()=>{
 
 const updateProgress = (e)=>{
         const percent = Math.round((e.loaded / e.total) * 100);
-        console.log(percent);
-        bgProgress.style.width = `${percent}%`
+        // console.log(percent);
+        bgProgress.style.width = `${percent}%`;
+        percentDiv.innerText = percent;
+        progressBar.style.tranform = `scaleX(${percent/100})`
+}
+
+const showLink = ({file}) =>{
+
+    console.log(file);
+    progressContainer.style.display = "none";
 }
